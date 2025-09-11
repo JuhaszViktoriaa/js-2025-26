@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bejelentkezés / Regisztráció</title>
+    <style>
+        body {
+            font-family: 'Arial Narrow';
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: gray;
+            margin: 0;
+        }
+        .form-container {
+            background-color: darkgrey;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px black;
+            width: 300px;
+            
+        }
+        h2 { text-align: center; }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: darkslategray;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: darkslateblue;
+        }
+        .error {
+            color: maroon;
+            font-size: 12px;
+            text-align: center;
+        }
+        .toggle {
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+
+    <script>
+        function toggleForm() {
+            let loginForm = document.getElementById('login-form');
+            let regisztraciosForm = document.getElementById('regisztracios-form');
+            let toggleLink = document.getElementById('toggle-link');
+
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                regisztraciosForm.style.display = 'none';
+                toggleLink.innerHTML = "regisztralj!";
+            }  
+            else {
+                loginForm.style.display = 'none';
+                regisztraciosForm.style.display = 'block';
+                toggleLink.innerHTML = "jelentkezz be!";
+            }
+        }
+
+        function validateEmail(email) {
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailPattern.test(email);
+        }
+
+        function login() {
+            const email = document.getElementById('login-email').value;
+            const jelszo = document.getElementById('login-jelszo').value;
+            const errorDiv = document.getElementById('login-error');
+
+            if (!validateEmail(email)) {
+                errorDiv.textContent = 'hibas email!';
+                return;
+            }
+
+            if (jelszo.length < 8) {
+                errorDiv.textContent = 'a jelszo nem eleg hosszu!';
+                return;
+            errorDiv.textContent = '';
+            alert('bejelentkezes sikeres!');
+            }
+        }
+
+        function regisztracio() {
+            const email = document.getElementById('regisztracios-email').value;
+            const jelszo = document.getElementById('regisztracios-jelszo').value;
+            const confirmPassword = document.getElementById('regisztracios-jelszo-confirm').value;
+            const errorDiv = document.getElementById('regisztracios-error');
+
+            if (!validateEmail(email)) {
+                errorDiv.textContent = 'hibas email!';
+                return;
+            }
+
+            if (jelszo !== confirmPassword) {
+                errorDiv.textContent = 'jelszok nem egyeznek!';
+                return;
+            }
+
+            if (jelszo.length < 6) {
+                errorDiv.textContent = 'a jelszo nem eleg hosszu!';
+                return;
+            }
+
+            errorDiv.textContent = '';
+            alert('regisztracio sikeres!');
+        }
+</script>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>bejelentkezes c0juhvik</h2>
+
+            <div id="login-form">
+                <input type="email" id="login-email" class="input-field" placeholder="email" />
+                <input type="password" id="login-jelszo" class="input-field" placeholder="jelszo" />
+
+                <button class="button" onclick="login()">bejelentkezes</button>
+
+                <div class="error" id="login-error"></div>
+            </div>
+
+            <div id="regisztracios-form" style="display: none;">
+                <input type="email" id="regisztracio-email" class="input-field" placeholder="email" />
+                <input type="password" id="regisztracio-jelszo" class="input-field" placeholder="jelszo" />
+                <input type="password" id="regisztracio-jelszo-confirm" class="input-field" placeholder="jelszo ujra" />
+
+                <button class="button" onclick="regisztracio()">regisztracio</button>
+
+                <div class="error" id="regisztracio-error"></div>
+            </div>
+
+            <div class="toggle">
+                <span id="toggle-link" onclick="toggleForm()">regisztralj!</span>
+            </div>
+    </div>
+</body>
+</html>
