@@ -2,13 +2,13 @@ import express from "express";
 const PORT = 3000;
 const app = express();
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log("a szerver a ${PORT}. porton fut.");
 });
 
 app.use(express.json());
 
-cofilms = [
+const films = [
   { id: 1, title: "alice in wonderland", year: 2020 },
   { id: 2, title: "2521", year: 2021 },
   { id: 3, title: "tomorrow", year: 2019 },
@@ -19,8 +19,8 @@ app.get("/films", (req, res) => {
 });
 
 app.get("/films/:id", (req, res) => {
-  const uid = parseInt(req.params.id);
-  const film = films.find((film) => film.id == uid);
+  const filmid = parseInt(req.params.id);
+  const film = films.find((film) => film.id == filmid);
   if (!film) {
     return res.status(404).json({ message: "a film nem talalhato." });
   }
@@ -39,8 +39,8 @@ app.post("/films", (req, res) => {
 });
 
 app.put("/films/:id", (req, res) => {
-  const uid = Number(req.params.id);
-  const film = films.find((film) => film.id == uid);
+  const filmid = Number(req.params.id);
+  const film = films.find((film) => film.id == filmid);
   if (!film) {
     return res.status(404).json({ message: "a film nem talalhato." });
   }
@@ -57,9 +57,9 @@ app.put("/films/:id", (req, res) => {
   res.status(200).json(films[index]);
 });
 
-app.delete("/users/:id", (req, res) => {
+app.delete("/films/:id", (req, res) => {
   const uid = +req.params.id;
-  const film = films.find((film) => film.id == uid);
+  const film = films.find((film) => film.id == filmid);
   if (!film) {
     return res.status(404).json({ message: "a film nem talalhato." });
   }
@@ -68,9 +68,9 @@ app.delete("/users/:id", (req, res) => {
   res.status(200).json({ message: "sikeres torles." });
 });
 
-app.patch("/users/:id", (req, res) => {
+app.patch("/films/:id", (req, res) => {
   const uid = +req.params.id;
-  const film = films.find((film) => film.id == uid);
+  const film = films.find((film) => film.id == filmid);
   if (!film) {
     return res.status(404).json({ message: "a film nem talalhato." });
   }
