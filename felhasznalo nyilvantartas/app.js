@@ -1,85 +1,91 @@
-import express from 'express'
-const port = 3000
-const app = express()
+import express from "express";
+import cors from "cors";
+import sqlite3 from "better-sqlite3";
+import bcrypt from "bcrypt";
 
-app.listen(port, () =>{
-    consolo.log('a szerver a ${port}. porton fut.')
-})
+const app = express();
+const PORT = 3000;
 
+app.use(cors());
 app.use(express.json());
 
-const users =[
-    {id: 1, nev: 'alice', kor: 20},
-    {id: 2, nev: 'beth', kor: 21},
-    {id: 3, nev: 'cedric', kor: 19}
-]
+app.post("/register", async (req, res) => {
+  const { email, password } = req.body;
 
-app.get("/users", (req, res) => {
-    res.status(200).json(users);
-})
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password required." });
+  }
 
-app.get("/users/:id", (req, res) => {
-    const uid=parseInt(req.params.id);
-    const user=users.find(user => user.id == uid);
-    if(!user){
-        return res.status(404).json({message: "felhasznalo nem talalhato."});
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    const info = stmt.run(email, hashedPassword);
+    res
+      .status(201)
+      .json({ message: "User registered", userId: info.lastInsertRowid });
+  } catch (err) {
+    if (err.code === "SQLITE_CONSTRAINT_UNIQUE") {
+      res.status(409).json({ message: "Email already exists." });
+    } else {
+      res.status(500).json({ message: "Database error." });
     }
-    res.status(200).json(user);
+  }
 });
 
-app.post("/users", (req, res) => {
-    const {nev, kor} = req.body;
-    if(!nev || !kor){
-        return res.status(404).json({message: "ervenytelen adatok."});
-    }
-    const id=users[users.length-1]?.id + 1;
-    const user= {id, nev, kor};
-    users.push(user);
-    res.status(201).json(user);
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password required." });
+  }
+
+  if (!user) {
+    return res.status(401).json({ message: "Invalid credentials." });
+  }
+
+  const isValid = await bcrypt.compare(password, user.password);
+  if (!isValid) {
+    return res.status(401).json({ message: "Invalid credentials." });
+  }
+
+  res.json({ message: "Login successful", userId: user.id });
 });
 
-app.put("/users/:id", (req, res) => {
-    const uid=Number(req.params.id);
-    const user=users.find(user => user.id == uid);
-    if(!user){
-        return res.status(404).json({message: "felhasznalo nem talalhato."});
-    }
-    const {nev, kor} = req.body;
-    if(!nev || !kor){
-        return res.status(404).json({message: "ervenytelen adatok."});
-    }
-    const index = users.indexOf(user);
-    users[index]={
-        id: user.id,
-        nev: nev,
-        kor: kor
-    };
-    res.status(200).json(users[index]);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
-app.delete("/users/:id", (req, res) => {
-    const uid=+req.params.id;
-    const user=users.find(user => user.id == uid);
-    if(!user){
-        return res.status(404).json({message: "felhasznalo nem talalhato."});
-    }
-    const index = users.indexOf(user);
-    users.splice(index, 1);
-    res.status(200).json({message: "sikeres torles."});
-});
+async function login() {
+  const email = document.getElementById("login-email").value;
+  const jelszo = document.getElementById("login-jelszo").value;
+  const errorDiv = document.getElementById("login-error");
 
-app.patch("/users/:id", (req, res) => {
-    const uid=+req.params.id;
-    const user=users.find(user => user.id == uid);
-    if(!user){
-        return res.status(404).json({message: "felhasznalo nem talalhato."});
+  if (!validateEmail(email)) {
+    errorDiv.textContent = "hibas email!";
+    return;
+  }
+
+  if (jelszo.length < 8) {
+    errorDiv.textContent = "a jelszo nem eleg hosszu!";
+    return;
+  }
+
+  errorDiv.textContent = "";
+
+  try {
+    const response = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password: jelszo }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      alert("bejelentkezes sikeres!");
+    } else {
+      errorDiv.textContent = data.message || "Hibás bejelentkezés.";
     }
-    const {nev, kor} = req.body;
-    const index = users.indexOf(user);
-    users[index]={
-        id: user.id,
-        nev: nev || user.nev,
-        kor: kor || user.kor,
-    };
-    res.status(200).json(users[index]);
-});
+  } catch (err) {
+    errorDiv.textContent = "Hálózati hiba.";
+  }
+}

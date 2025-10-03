@@ -1,18 +1,22 @@
 {
-  "name": "felhasznalo-nyilvantartas",
+  "name": "bejelentkezes",
   "version": "1.0.0",
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
+  "devDependencies": {
+    "express": "^5.1.0"
+  },
   "dependencies": {
-    "express": "^5.1.0",
-    "start": "nodemon",
-    "dev": "node js"
+    "better-sqlite3": "^12.4.1",
+    "cors": "^2.8.5"
   }
 }
