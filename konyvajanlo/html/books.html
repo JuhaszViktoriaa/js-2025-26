@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Könyvlista</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+  <h1>Könyvlista</h1>
+  <div id="book-list"></div>
+</div>
+
+<script type="module">
+import { fetchJSON } from "./app.js";
+
+const list = document.getElementById("book-list");
+
+async function loadBooks() {
+  const books = await fetchJSON("http://localhost:3001/api/books");
+
+  list.innerHTML = books.map(book => `
+    <div class="card">
+      <h2>${book.title}</h2>
+      <p><b>Szerző:</b> ${book.author}</p>
+      <button onclick="openDetails(${book.id})">Részletek</button>
+    </div>
+  `).join("");
+}
+
+window.openDetails = (id) => {
+  window.location.href = `bookdetails.html?id=${id}`;
+};
+
+loadBooks();
+</script>
+</body>
+</html>

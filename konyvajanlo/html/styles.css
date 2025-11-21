@@ -1,0 +1,39 @@
+body {
+  font-family: 'Arial Narrow';
+  margin: 40px;
+  background: white;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px black;
+}
+
+button {
+  padding: 10px 20px;
+  background: darkslategray;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: darkslateblue;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px;
+  border-radius: 5px;
+  border: 1px solid white;
+}
