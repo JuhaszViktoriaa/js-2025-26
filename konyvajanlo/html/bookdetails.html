@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Könyv részletei</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <script type="module">
+import { fetchJSON } from "./app.js";
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+async function loadBook() {
+  const book = await fetchJSON(`http://localhost:3001/api/books/${id}`);
+  document.getElementById("details").innerHTML = `
+    <div class="card">
+      <h1>${title}</h1>
+      <p><b>Szerző:</b> ${author}</p>
+      <p>${description}</p>
+    </div>
+  `;
+}
+
+async function loadReviews() {
+  const reviews = await fetchJSON("http://localhost:3002/api/reviews");
+  const filtered = reviews.filter(r => r.book_id == id);
+
+  document.getElementById("reviews").innerHTML = filtered.length
+    ? filtered.map(r => `
+        <div class="card">
+          <b>Értékelés:</b> ${r.rating}/5<br>
+          <p>${r.comment}</p>
+        </div>`).join(""): "<p>Még nincsenek értékelések.</p>";
+}
+
+document.getElementById("write-review").onclick = () => {
+  window.location.href = `review.html?book=${id}`;
+};
+
+loadBook();
+loadReviews();
+    </script>
+<div class="container">
+  <div id="details"></div>
+  <h2>Értékelések</h2>
+  <div id="reviews"></div>
+  <button id="write-review">Értékelés írása</button>
+</div>
+  </body>
+</html>

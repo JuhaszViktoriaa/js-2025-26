@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Értékelés írása</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+  <body>
+    <script type="module">
+      import { fetchJSON, getUser, requireLogin } from "./reviewapp.js";
+
+      requireLogin();
+
+      const params = new URLSearchParams(window.location.search);
+      const book_id = params.get("book");
+
+      document.getElementById("review-form").onsubmit = async (e) => {
+        e.preventDefault();
+
+        const user = getUser();
+
+        const data = { book_id, user_id: user.id, rating: rating.value, comment: comment.value};
+
+        await fetchJSON("http://localhost:3002/api/reviews", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(data)
+        });
+
+        alert("Értékelés mentve!");
+        window.location.href = `bookdetails.html?id=${book_id}`;
+      };
+      </script>
+    <div class="container">
+      <h1>Értékelés írása</h1>
+
+      <form id="review-form">
+        <label>Értékelés (1-5):</label>
+        <input type="number" min="1" max="5" id="rating" required>
+
+        <label>Megjegyzés:</label>
+        <textarea id="comment" required></textarea>
+
+        <button type="submit">Mentés</button>
+      </form>
+    </div>
+  </body>
+</html>

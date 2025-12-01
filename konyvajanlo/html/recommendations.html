@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajánlásaim</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+  <body>
+    <script type="module">
+      import { fetchJSON, requireLogin, getUser } from "./app.js";
+
+      requireLogin();
+      const user = getUser();
+
+      async function load() {
+        const books = await fetchJSON("http://localhost:3001/api/books");
+        const mine = books.filter(b => added_by == user.id);
+
+        document.getElementById("list").innerHTML = mine.length
+          ? mine.map(b => `
+            <div class="card">
+              <h2>${title}</h2>
+              <p>${description}</p>
+            </div>`).join(""): "<p>Még nem ajánlottál könyvet.</p>";
+      }
+
+      load();
+    </script>
+
+    <div class="container">
+      <h1>Saját ajánlásaim</h1>
+      <div id="list"></div>
+    </div>
+  </body>
+</html>
