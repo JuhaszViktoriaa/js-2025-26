@@ -13,18 +13,23 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            background-color: black;
         }
         .card{
             align-items: center;
             align-content: center;
             text-align: center;
             max-width: fit-content;
-            max-width: fit-content;
+        }
+        .card-header{
+            width: 100%;
+            font-weight: 600;
+        }
+        .betumeret-kicsi{
+            font-size: small;
         }
         .betumeret{
-            font-size: small;
-            align-content: center;
-            align-items: center;
+            font-size: larger;
         }
     </style>
 </head>
@@ -32,12 +37,14 @@
     <div class="card">
         <div class="card-header">Labrador</div>
 
-        <div class="card-body betumeret">
-            <strong>$15</strong>/mo <br>
-            Unlimited Matches <br>
-            Unlimited Messages <br>
-            Unlimited App Usage <br>
-            <br>
+        <div class="card-body">
+            <div class="betumeret"><strong>$15</strong>/mo<br></div>
+            <div class="betumeret-kicsi">
+                Unlimited Matches <br>
+                Unlimited Messages <br>
+                Unlimited App Usage <br>
+                <br>
+            </div>
             <button type="button" class="btn btn-dark">Get started</button>
         </div>
     </div>
