@@ -8,13 +8,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
+        body{
+            align-items: center;
+            align-content: center;
+        }
         .navbar{
             background-color: rgb(225, 182, 255);
             padding-left: 10px;
             width: 100vw;
             height: 5vh;
-        }
-        .navbartext{
             text-align: left;
         }
         .cim{
@@ -25,13 +27,14 @@
             align-items: center;
             align-content: center;
         }
+        .reset{
+            height: 20px;
+            max-width: fit-content;
+            align-content: center;
+        }
         .ertek{
             font-size: xx-large;
             text-align: center;
-        }
-        .gombok{
-            align-items: center;
-            align-content: center;
         }
         .btn-counter{
             background-color: rgb(227, 194, 250);
@@ -39,7 +42,7 @@
         }
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {           //hamarabb betolti a jst, mint a htmlt ugyh nem mukodnek a gombok nelkule
+        document.addEventListener('DOMContentLoaded', () => {
             let kezdoertek = 0;
             kezdoertek = Math.max(0, kezdoertek);
             const display = document.querySelector('.ertek');
@@ -49,30 +52,39 @@
                     kezdoertek += Number(button.dataset.change);
                     display.textContent = kezdoertek;
                 });
-                //console.log(kezdoertek)
             });
         });
     </script>
 </head>
 <body>
-    <nav class="navbar">
-        <p class="navbartext">Counter</p>
-    </nav>
-
     <div class="kontener">
+        <nav class="navbar">
+            <p>Counter</p>
+        </nav>
+
         <p class="cim">Counter value:</p>
         <p class="ertek">0</p>
 
         <div class="row justify-content-center gap-2 mb-2">
-            <div class="col-auto"><button type="button" class="btn btn-counter btn-sm px-3 kontener" data-change="-1">-</button></div>
-            <div class="col-auto"><button type="button" class="btn btn-counter btn-sm px-3 kontener" data-change="+1">+</button></div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-counter btn-sm px-3 kontener" data-change="-1">-</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-counter btn-sm px-3 kontener" data-change="+1">+</button>
+            </div>
 
-             <div class="row justify-content-center">
-                <div class="col-auto"><button type="button" class="btn btn-counter btn-sm px-3 kontener" data-change="-10">-10</button></div>
-                <div class="col-auto"><button type="button" class="btn btn-counter btn-sm px-3 kontener" data-change="+10">+10</button></div>
+             <div class="row justify-content-center gap-5">
+                <div class="col-auto">
+                    <button type="button" class="btn btn-counter btn-sm px-3 kontener" data-change="-10">-10</button>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-counter btn-sm px-3 kontener" data-change="+10">+10</button>
+                </div>
             </div>
         </div>
-        <div class="row justify-content-center"><button class="btn btn-light btn-sm px-3 justify-content-center" data-change="reset">Reset</button></div>
+        <div class="row justify-content-center reset">
+            <button class="btn btn-light btn-sm px-3 justify-content-center" data-change="reset">Reset</button>
+        </div>
     </div>
 </body>
 </html>
